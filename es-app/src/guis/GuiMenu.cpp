@@ -213,7 +213,7 @@ void GuiMenu::openResetOptions(Window* mWindow, std::string configName)
 
     resetOptions->addGroup(_("DATA MANAGEMENT"));
     resetOptions->addEntry(_("BACKUP CONFIGURATIONS"), true, [mWindow] {
-    mWindow->pushGui(new GuiMsgBox(mWindow, _("WARNING THIS WILL RESTART EMULATIONSTATION!\n\nAFTER THE SCRIPT IS DONE REMEMBER TO COPY THE FILE /storage/roms/backup/JELOS_BACKUP.zip TO SOME PLACE SAFE OR IT WILL BE DELETED ON NEXT REBOOT!\n\nBACKUP CURRENT CONFIG AND RESTART?"), _("YES"),
+    mWindow->pushGui(new GuiMsgBox(mWindow, _("WARNING THIS WILL RESTART EMULATIONSTATION!\n\nAFTER THE SCRIPT IS DONE REMEMBER TO COPY THE FILE /storage/roms/backup/UNOFFICIALOS_BACKUP.zip TO SOME PLACE SAFE OR IT WILL BE DELETED ON NEXT REBOOT!\n\nBACKUP CURRENT CONFIG AND RESTART?"), _("YES"),
 				[] {
 				runSystemCommand("/usr/bin/run \"/usr/bin/backuptool backup\"", "", nullptr);
 				}, _("NO"), nullptr));
@@ -1044,7 +1044,7 @@ void GuiMenu::openSystemSettings_batocera()
 		mount_games->setOnChangedCallback([this, s, mount_games] {
 			SystemConf::getInstance()->setBool("system.automount", mount_games->getState());
 			SystemConf::getInstance()->saveSystemConf();
-			runSystemCommand("/usr/bin/systemctl restart jelos-automount", "", nullptr);
+			runSystemCommand("/usr/bin/systemctl restart unofficialos-automount", "", nullptr);
 		});
 
 		if (Utils::FileSystem::exists("/storage/.ms_supported") && MountGamesEnabled) 
@@ -1057,7 +1057,7 @@ void GuiMenu::openSystemSettings_batocera()
 	                        bool overlayStateEnabled = overlayState->getState();
 				SystemConf::getInstance()->setBool("system.merged.storage", overlayState->getState());
 				SystemConf::getInstance()->saveSystemConf();
-	                        runSystemCommand("/usr/bin/systemctl restart jelos-automount", "", nullptr);
+	                        runSystemCommand("/usr/bin/systemctl restart unofficialos-automount", "", nullptr);
 			});
 
 			auto optionsMSDevice = std::make_shared<OptionListComponent<std::string> >(mWindow, _("MERGED STORAGE PRIMARY CARD"), false);
@@ -1078,7 +1078,7 @@ void GuiMenu::openSystemSettings_batocera()
 					{
 						SystemConf::getInstance()->set("system.merged.device", optionsMSDevice->getSelected());
 						SystemConf::getInstance()->saveSystemConf();
-						runSystemCommand("/usr/bin/systemctl restart jelos-automount " + optionsMSDevice->getSelected(), "", nullptr);
+						runSystemCommand("/usr/bin/systemctl restart unofficialos-automount " + optionsMSDevice->getSelected(), "", nullptr);
 					}, _("NO"), nullptr));
 				}
 			});
@@ -1188,7 +1188,7 @@ void GuiMenu::openSystemSettings_batocera()
 		s->addSaveFunc([this, optionsOCProfile, selectedOCProfile]
 		{
 			if (optionsOCProfile->changed()) {
-				mWindow->pushGui(new GuiMsgBox(mWindow, _("WARNING: OVERCLOCKING YOUR DEVICE MAY RESULT IN STABILITY PROBLEMS OR CAUSE HARDWARE DAMAGE!\n\nUSING THE QUIET COOLING PROFILE WHILE USING CERTAIN OVERCLOCKS MAY CAUSE PANIC REBOOTS!\n\nJELOS IS NOT RESPONSIBLE FOR ANY DAMAGE THAT MAY OCCUR USING THESE SETTINGS!\n\nCLICK YES THAT YOU AGREE, OR NO TO CANCEL."), _("YES"),
+				mWindow->pushGui(new GuiMsgBox(mWindow, _("WARNING: OVERCLOCKING YOUR DEVICE MAY RESULT IN STABILITY PROBLEMS OR CAUSE HARDWARE DAMAGE!\n\nUSING THE QUIET COOLING PROFILE WHILE USING CERTAIN OVERCLOCKS MAY CAUSE PANIC REBOOTS!\n\nUNOFFICIALOS IS NOT RESPONSIBLE FOR ANY DAMAGE THAT MAY OCCUR USING THESE SETTINGS!\n\nCLICK YES THAT YOU AGREE, OR NO TO CANCEL."), _("YES"),
 	                                [this,optionsOCProfile] {
 						SystemConf::getInstance()->set("system.overclock", optionsOCProfile->getSelected());
 						SystemConf::getInstance()->saveSystemConf();
@@ -4498,7 +4498,7 @@ void GuiMenu::popSpecificConfigurationGui(Window* mWindow, std::string title, st
 	        systemConfiguration->addSaveFunc([optionsOCProfile, selectedOCProfile, configName, mWindow]
 	        {
 	                if (optionsOCProfile->changed()) {
-	                        mWindow->pushGui(new GuiMsgBox(mWindow, _("WARNING: OVERCLOCKING YOUR DEVICE MAY RESULT IN STABILITY PROBLEMS OR CAUSE HARDWARE DAMAGE!\n\nUSING THE QUIET COOLING PROFILE WHILE USING CERTAIN OVERCLOCKS MAY CAUSE PANIC REBOOTS!\n\nJELOS IS NOT RESPONSIBLE FOR ANY DAMAGE THAT MAY OCCUR USING THESE SETTINGS!\n\nCLICK YES THAT YOU AGREE, OR NO TO CANCEL."), _("YES"),
+	                        mWindow->pushGui(new GuiMsgBox(mWindow, _("WARNING: OVERCLOCKING YOUR DEVICE MAY RESULT IN STABILITY PROBLEMS OR CAUSE HARDWARE DAMAGE!\n\nUSING THE QUIET COOLING PROFILE WHILE USING CERTAIN OVERCLOCKS MAY CAUSE PANIC REBOOTS!\n\nUNOFFICIALOS IS NOT RESPONSIBLE FOR ANY DAMAGE THAT MAY OCCUR USING THESE SETTINGS!\n\nCLICK YES THAT YOU AGREE, OR NO TO CANCEL."), _("YES"),
 				[optionsOCProfile,configName] {
 	                                SystemConf::getInstance()->set(configName + ".overclock", optionsOCProfile->getSelected());
 	                                SystemConf::getInstance()->saveSystemConf();
