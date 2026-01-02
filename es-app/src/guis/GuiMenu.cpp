@@ -1005,7 +1005,7 @@ void GuiMenu::openSystemSettings_batocera()
 	}
 
         if (GetEnv("DEVICE_DTB_SWITCH") == "true"){
-        s->addGroup(_("HARDWARE /DEVICE"));
+        s->addGroup(_("HARDWARE / DEVICE"));
         // Switch device dtb between the R33S & R36S
         auto device_switch = std::make_shared<SwitchComponent>(mWindow);
         bool deviceswitchEnabled = SystemConf::getInstance()->get("system.device-dtb-r36s") == "1";
@@ -4585,6 +4585,27 @@ void GuiMenu::popSpecificConfigurationGui(Window* mWindow, std::string title, st
 			SystemConf::getInstance()->saveSystemConf();
 		}
 	});
+
+#ifdef _PANFROST
+    // Panfrost forcepack
+    auto optionsForcepackEnabled = std::make_shared<OptionListComponent<std::string>>(mWindow, _("PANFROST FORCEPACK"));
+    std::string selectedForcepackEnabled = SystemConf::getInstance()->get(configName + ".forcepack");
+    if (selectedForcepackEnabled.empty())
+        selectedForcepackEnabled = "default";
+
+    optionsForcepackEnabled->add(_("DEFAULT"), "default", selectedForcepackEnabled == "default");
+    optionsForcepackEnabled->add(_("OFF"), "0", selectedForcepackEnabled == "0");
+    optionsForcepackEnabled->add(_("ON"), "1", selectedForcepackEnabled == "1");
+
+    systemConfiguration->addWithLabel(_("PANFROST FORCEPACK"), optionsForcepackEnabled);
+    systemConfiguration->addSaveFunc([configName, optionsForcepackEnabled]
+    {
+        if (optionsForcepackEnabled->changed()) {
+            SystemConf::getInstance()->set(configName + ".forcepack", optionsForcepackEnabled->getSelected());
+        }
+    });
+#endif
+
 	if (systemData->isFeatureSupported(currentEmulator, currentCore, EmulatorFeatures::latency_reduction))
 		systemConfiguration->addEntry(_("LATENCY REDUCTION"), true, [mWindow, configName] { openLatencyReductionConfiguration(mWindow, configName); });
 
